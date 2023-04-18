@@ -1,10 +1,10 @@
-package com.bookingames.bookingames;
+package com.bookingames.myApp;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class BookingamesApplicationTests {
+class MyAppApplicationTests {
 
 	@Test
 	void contextLoads() {

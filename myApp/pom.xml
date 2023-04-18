@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.bookingames</groupId>
-	<artifactId>Bookingames</artifactId>
+	<artifactId>myApp</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>Bookingames</name>
-	<description>Aplikacja bookingames</description>
+	<name>myApp</name>
+	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
