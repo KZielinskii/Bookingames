@@ -1,6 +1,6 @@
 package com.bookingames.service;
 
-import com.bookingames.database.AppUser;
+import com.bookingames.model.AppUser;
 import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,7 +13,7 @@ public class UserService {
     private EntityManager entityManager;
 
     @Transactional
-    public void saveUser(AppUser user) {
+    public void save(AppUser user) {
         entityManager.persist(user);
     }
 }

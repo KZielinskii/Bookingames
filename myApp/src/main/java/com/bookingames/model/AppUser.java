@@ -1,4 +1,4 @@
-package com.bookingames.database;
+package com.bookingames.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
