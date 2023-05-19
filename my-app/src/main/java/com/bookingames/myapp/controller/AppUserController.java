@@ -1,5 +1,4 @@
 package com.bookingames.myapp.controller;
-
 import com.bookingames.myapp.exception.UserNotFoundException;
 import com.bookingames.myapp.model.AppUser;
 import com.bookingames.myapp.repository.AppUserRepository;
@@ -28,7 +27,13 @@ public class AppUserController {
 
     @GetMapping("/user/{id}")
     AppUser getUserById(@PathVariable Long id) {
-        return appUserRepository.findById(id).orElseThrow(()->new UserNotFoundException(id));
+        return appUserRepository.findById(id).orElseThrow(()->new UserNotFoundException("Nie znaleziono użytkowniaka o id: " +id));
+    }
+
+    @GetMapping("/username/{username}")
+    AppUser getUserById(@PathVariable String username) {
+        return appUserRepository.findByUsername(username)
+                .orElseThrow(() -> new UserNotFoundException("Nie znaleziono użytkownika o username: " + username));
     }
 
     @PutMapping("/user/{id}")
@@ -38,14 +43,14 @@ public class AppUserController {
             user.setName(newUser.getName());
             user.setEmail(newUser.getEmail());
             return appUserRepository.save(user);
-        }).orElseThrow(()->new UserNotFoundException(id));
+        }).orElseThrow(()->new UserNotFoundException("Nie znaleziono użytkowniaka o id: " +id));
     }
 
     @DeleteMapping("/user/{id}")
     String deleteUser(@PathVariable Long id){
         if(!appUserRepository.existsById(id))
         {
-            throw new UserNotFoundException(id);
+            throw new UserNotFoundException("Nie znaleziono użytkowniaka o id: " +id);
         }
         appUserRepository.deleteById(id);
         return "Użytkownik o id: " + id + " został usunięty.";

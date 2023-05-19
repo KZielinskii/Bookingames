@@ -11,10 +11,12 @@ export default function EditUser() {
   const [user,setUser]=useState({
     name:"",
     username:"",
-    email:""
+    email:"",
+    password:"",
+    usertype:""
   })
 
-  const{name, username, email} = user
+  const{name, username, email, password, usertype} = user
 
   const onInputChange=(e)=>{
     setUser({...user,[e.target.name]:e.target.value})
@@ -61,7 +63,8 @@ export default function EditUser() {
             <input type='text'
             className='form-control' 
             placeholder='Enter your username...'
-            name='username' value={username}
+            name='username'
+            value={username}
             onChange={(e)=>onInputChange(e)}
             />
           </div>
@@ -74,6 +77,18 @@ export default function EditUser() {
             placeholder='Enter your e-mail...'
             name='email'
             value={email}
+            onChange={(e)=>onInputChange(e)}
+            />
+          </div>
+          <div className='mb-3'>
+            <label htmlFor='Usertype' className='form-label'>
+              Usertype:
+            </label>
+            <input type='text'
+            className='form-control' 
+            placeholder='Enter your type account...'
+            name='usertype'
+            value={usertype}
             onChange={(e)=>onInputChange(e)}
             />
           </div>

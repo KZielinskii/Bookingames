@@ -12,6 +12,24 @@ public class AppUser {
     private String username;
     private String name;
     private String email;
+    private String password;
+    private String usertype;
+
+    public String getUsertype() {
+        return usertype;
+    }
+
+    public void setUsertype(String usertype) {
+        this.usertype = usertype;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     public Long getId() {
         return id;
