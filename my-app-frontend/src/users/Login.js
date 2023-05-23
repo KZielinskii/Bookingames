@@ -1,9 +1,10 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import bcrypt from 'bcryptjs';
 
 export default function Login() {
+  
   let navigate = useNavigate();
 
   const [loginData, setLoginData] = useState({
@@ -17,6 +18,10 @@ export default function Login() {
   const onInputChange = (e) => {
     setLoginData({ ...loginData, [e.target.name]: e.target.value });
   };
+
+  useEffect(() => {
+    
+  }, []);
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -37,8 +42,8 @@ export default function Login() {
     }
     sessionStorage.setItem('username', user.username);
     sessionStorage.setItem('login', true);
-    sessionStorage.setItem('usertype', user.usertype)
-    navigate('/admin');
+    sessionStorage.setItem('usertype', user.usertype);
+    navigate('/home');
   };
   
 

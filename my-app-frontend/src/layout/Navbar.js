@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 export default function Navbar() {
-  const isLogged = sessionStorage.getItem('login');
+  const [isLogged, setIsLogged] = useState(sessionStorage.getItem('login'));
+
+  useEffect(() => {
+    setIsLogged(sessionStorage.getItem('login'));
+  }, []);
 
   return (
     <div>
@@ -28,17 +32,18 @@ export default function Navbar() {
                 Wyloguj się
               </Link>
             ) : (
-              <Link className="btn btn-outline-light me-2" to="/">
-                Zaloguj się
-              </Link>
+              <>
+                <Link className="btn btn-outline-light me-2" to="/">
+                  Zaloguj się
+                </Link>
+                <Link className="btn btn-outline-light" to="/adduser">
+                  Zarejestruj się
+                </Link>
+              </>
             )}
-            <Link className="btn btn-outline-light" to="/adduser">
-              Zarejestruj się
-            </Link>
           </div>
         </div>
       </nav>
     </div>
   );
 }
-
