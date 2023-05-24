@@ -1,18 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 export default function Navbar() {
+  const location = useLocation();
   const [isLogged, setIsLogged] = useState(sessionStorage.getItem('login'));
+  const [isAdmin, setIsAdmin] = useState(sessionStorage.getItem('usertype') === 'admin');
 
   useEffect(() => {
     setIsLogged(sessionStorage.getItem('login'));
-  }, []);
+    setIsAdmin(sessionStorage.getItem('usertype') === 'admin');
+  }, [location]);
 
   return (
     <div>
       <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
         <div className="container-fluid">
-          <a className="navbar-brand" href="#">
+          <a className="navbar-brand" href="/home">
             Bookingames
           </a>
           <button
@@ -28,9 +31,16 @@ export default function Navbar() {
           </button>
           <div className="ms-auto">
             {isLogged ? (
-              <Link className="btn btn-outline-light me-2" to="/logout">
-                Wyloguj się
-              </Link>
+              <>
+                {isAdmin ? (
+                  <Link className="btn btn-outline-light me-2" to="/admin">
+                    Panel administratora
+                  </Link>
+                ) : null}
+                <Link className="btn btn-outline-light me-2" to="/logout">
+                  Wyloguj się
+                </Link>
+              </>
             ) : (
               <>
                 <Link className="btn btn-outline-light me-2" to="/">

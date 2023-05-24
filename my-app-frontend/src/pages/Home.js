@@ -1,10 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import {Link, useParams} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 
 export default function Home() {
-    const [users, setUsers] = useState([]);
+    
+    let navigate=useNavigate()
     const username = sessionStorage.getItem('username');
+    const usertype = sessionStorage.getItem('usertype');
+    const isLogged = sessionStorage.getItem('login');
+
+    console.log(isLogged);
+
   
    
   }

@@ -1,10 +1,9 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import bcrypt from 'bcryptjs';
 
 export default function Login() {
-  
   let navigate = useNavigate();
 
   const [loginData, setLoginData] = useState({
@@ -12,40 +11,41 @@ export default function Login() {
     password: ''
   });
 
-  const { username, password } = loginData;
+  const [error, setError] = useState('');
 
+  const { username, password } = loginData;
 
   const onInputChange = (e) => {
     setLoginData({ ...loginData, [e.target.name]: e.target.value });
   };
 
   useEffect(() => {
-    
+    setError('');
   }, []);
 
   const onSubmit = async (e) => {
     e.preventDefault();
-  
-    const response = await axios.get(`http://localhost:8080/username/${username}`);
-    const user = response.data;
-  
-    if (!user) {
-      alert('Nie znaleziono użytkownika!');
-      return;
+
+    try {
+      const response = await axios.get(`http://localhost:8080/username/${username}`);
+      const user = response.data;
+
+      const isPasswordCorrect = bcrypt.compareSync(password, user.password);
+
+      if (!isPasswordCorrect) {
+        setError('Nieprawidłowe hasło!');
+        return;
+      }
+
+      sessionStorage.setItem('username', user.username);
+      sessionStorage.setItem('login', true);
+      sessionStorage.setItem('usertype', user.usertype);
+      navigate('/home');
+    } catch (error) {
+      setError('Nieprawidłowy login!');
+      console.log(error);
     }
-  
-    const isPasswordCorrect = bcrypt.compareSync(password, user.password);
-  
-    if (!isPasswordCorrect) {
-      alert('Nieprawidłowe hasło!');
-      return;
-    }
-    sessionStorage.setItem('username', user.username);
-    sessionStorage.setItem('login', true);
-    sessionStorage.setItem('usertype', user.usertype);
-    navigate('/home');
   };
-  
 
   return (
     <div className='container'>
@@ -80,6 +80,7 @@ export default function Login() {
                 onChange={onInputChange}
               />
             </div>
+            {error && <div className='alert alert-danger'>{error}</div>}
             <button type='submit' className='btn btn-primary'>
               Zaloguj się
             </button>
