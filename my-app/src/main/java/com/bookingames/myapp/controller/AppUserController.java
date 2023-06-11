@@ -1,5 +1,5 @@
 package com.bookingames.myapp.controller;
-import com.bookingames.myapp.exception.UserNotFoundException;
+import com.bookingames.myapp.exception.NotFoundException;
 import com.bookingames.myapp.model.AppUser;
 import com.bookingames.myapp.repository.AppUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,13 +27,19 @@ public class AppUserController {
 
     @GetMapping("/user/{id}")
     AppUser getUserById(@PathVariable Long id) {
-        return appUserRepository.findById(id).orElseThrow(()->new UserNotFoundException("Nie znaleziono użytkowniaka o id: " +id));
+        return appUserRepository.findById(id).orElseThrow(()->new NotFoundException("Nie znaleziono użytkowniaka o id: " +id));
     }
 
     @GetMapping("/username/{username}")
-    AppUser getUserById(@PathVariable String username) {
+    AppUser getUserByUsername(@PathVariable String username) {
         return appUserRepository.findByUsername(username)
-                .orElseThrow(() -> new UserNotFoundException("Nie znaleziono użytkownika o username: " + username));
+                .orElseThrow(() -> new NotFoundException("Nie znaleziono użytkownika o username: " + username));
+    }
+
+    @GetMapping("/email/{email}")
+    AppUser getUserByEmail(@PathVariable String email) {
+        return appUserRepository.findByEmail(email)
+                .orElseThrow(() -> new NotFoundException("Nie znaleziono użytkownika o username: " + email));
     }
 
     @PutMapping("/user/{id}")
@@ -44,14 +50,14 @@ public class AppUserController {
             user.setEmail(newUser.getEmail());
             user.setUsertype(newUser.getUsertype());
             return appUserRepository.save(user);
-        }).orElseThrow(()->new UserNotFoundException("Nie znaleziono użytkowniaka o id: " +id));
+        }).orElseThrow(()->new NotFoundException("Nie znaleziono użytkowniaka o id: " +id));
     }
 
     @DeleteMapping("/user/{id}")
     String deleteUser(@PathVariable Long id){
         if(!appUserRepository.existsById(id))
         {
-            throw new UserNotFoundException("Nie znaleziono użytkowniaka o id: " +id);
+            throw new NotFoundException("Nie znaleziono użytkowniaka o id: " +id);
         }
         appUserRepository.deleteById(id);
         return "Użytkownik o id: " + id + " został usunięty.";

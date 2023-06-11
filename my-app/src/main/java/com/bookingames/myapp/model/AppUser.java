@@ -1,7 +1,6 @@
 package com.bookingames.myapp.model;
 
 import jakarta.persistence.*;
-import jdk.jfr.DataAmount;
 import lombok.Data;
 
 @Data

@@ -23,6 +23,28 @@ export default function AddUser() {
     setUser({...user,[e.target.name]:e.target.value})
   }
 
+  const checkUsernameExists = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8080/username/${username}`);
+      const existingUser = response.data;
+      return !!existingUser;
+    } catch (error) {
+      console.error('Error checking username:', error);
+      return false;
+    }
+  };
+
+  const checkEmailExists = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8080/email/${email}`);
+      const existingUser = response.data;
+      return !!existingUser;
+    } catch (error) {
+      console.error('Error checking emial:', error);
+      return false;
+    }
+  };
+
   const onSubmit=async(e)=>{
     e.preventDefault();
     if(!name || !username || !email || !password)
@@ -34,6 +56,16 @@ export default function AddUser() {
     {
       alert("Nie wprowadzono tego samego hasła!")
       return
+    }
+    const usernameExists = await checkUsernameExists();
+    if (usernameExists) {
+      alert('Podany login jest już zajęty!');
+      return;
+    }
+    const emailExists = await checkEmailExists();
+    if (emailExists) {
+      alert('Podany email jest już zajęty!');
+      return;
     }
 
     const saltRounds = 10; // Liczba rund solenia
@@ -55,11 +87,11 @@ export default function AddUser() {
           <form onSubmit={(e)=>onSubmit(e)}>
           <div className='mb-3'>
             <label htmlFor='Name' className='form-label'>
-              Name:
+              Imię:
             </label>
             <input type='text'
             className='form-control' 
-            placeholder='Enter your name...'
+            placeholder='Wprowadź swoje imię...'
             name='name'
             value={name}
             onChange={(e)=>onInputChange(e)}
@@ -67,11 +99,11 @@ export default function AddUser() {
           </div>
           <div className='mb-3'>
             <label htmlFor='Username' className='form-label'>
-              Username:
+              Login:
             </label>
             <input type='text'
             className='form-control' 
-            placeholder='Enter your username...'
+            placeholder='Wprowadź swój login...'
             name='username' value={username}
             onChange={(e)=>onInputChange(e)}
             />
@@ -82,7 +114,7 @@ export default function AddUser() {
             </label>
             <input type='text'
             className='form-control' 
-            placeholder='Enter your e-mail...'
+            placeholder='Wprowadź swój e-mail...'
             name='email'
             value={email}
             onChange={(e)=>onInputChange(e)}
@@ -90,11 +122,11 @@ export default function AddUser() {
           </div>
           <div className='mb-3'>
             <label htmlFor='Password' className='form-label'>
-              Password:
+              Hasło:
             </label>
             <input type='password'
             className='form-control' 
-            placeholder='Enter your password...'
+            placeholder='Wprowadź hasło...'
             name='password'
             value={password}
             onChange={(e)=>onInputChange(e)}
@@ -102,18 +134,18 @@ export default function AddUser() {
           </div>
           <div className='mb-3'>
             <label htmlFor='PasswordConfirm' className='form-label'>
-            Repeat Password:
+            Powótrz hasło:
             </label>
             <input type='password'
             className='form-control' 
-            placeholder='Enter your password...'
+            placeholder='Powótrz hasło...'
             name='password2'
             value={password2}
             onChange={(e) => setTempPassword2(e.target.value)}
             />
           </div>
-          <button type='submit' className='btn btn-primary' > Zarejestruj się </button>
-          <Link className='btn btn-danger' to="/" > Anuluj </Link>
+          <button type='submit' className='btn btn-primary mx-2' > Zarejestruj się </button>
+          <Link className='btn btn-danger mx-2' to="/" > Anuluj </Link>
           </form>
         </div>
       </div>

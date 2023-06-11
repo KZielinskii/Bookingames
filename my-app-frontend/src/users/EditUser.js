@@ -92,8 +92,8 @@ export default function EditUser() {
             onChange={(e)=>onInputChange(e)}
             />
           </div>
-          <button type='submit' className='btn btn-primary' > Edytuj </button>
-          <Link className='btn btn-danger' to="/" > Anuluj </Link>
+          <button type='submit' className='btn btn-primary mx-2' > Edytuj </button>
+          <Link className='btn btn-danger mx-2' to="/" > Anuluj </Link>
           </form>
         </div>
       </div>
