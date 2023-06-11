@@ -1,12 +1,10 @@
 package com.bookingames.myapp.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Entity
@@ -18,9 +16,17 @@ public class Game {
     private int capacity;
     private int occupied;
     private LocalDateTime datetime;
-    private Long transferredId;
+    private Level level;
     @ManyToOne
     private Locality locality;
-    private Level level;
+    @ManyToOne
+    private AppUser appUser;
+    private Long transferredLocationId;
+    private Long transferredUserId;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "game_app_user",
+            joinColumns = @JoinColumn(name = "game_id"),
+            inverseJoinColumns = @JoinColumn(name = "app_user_id"))
+    private List<AppUser> appUsers;
 }
 

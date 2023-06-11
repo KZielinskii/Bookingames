@@ -6,11 +6,11 @@ export default function AddLocality() {
 
     let navigate=useNavigate()
 
+    const usertype = sessionStorage.getItem('usertype');
+
     const [locality,setLocality]=useState({
       name:""
     })
-
-    const name = {};
 
     const onInputChange=(e)=>{
         setLocality({...locality,[e.target.name]:e.target.value})
@@ -20,6 +20,16 @@ export default function AddLocality() {
         e.preventDefault();
         await axios.post("http://localhost:8080/locality",locality)
         navigate("/manageLocations")
+      }
+
+      if (usertype !== 'admin') {
+        return (
+          <div className='container'>
+            <div className='py-4'>
+              <h2>Access denied.</h2>
+            </div>
+          </div>
+        );
       }
     
       return (

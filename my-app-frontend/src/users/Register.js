@@ -12,7 +12,8 @@ export default function AddUser() {
     username:"",
     email:"",
     password:"",
-    usertype:"standard"
+    usertype:"standard",
+    level: 0
   })
 
   const [password2, setTempPassword2] = useState("")

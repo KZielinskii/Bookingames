@@ -37,6 +37,7 @@ export default function Login() {
         return;
       }
 
+      sessionStorage.setItem('user_id', user.id);
       sessionStorage.setItem('username', user.username);
       sessionStorage.setItem('login', true);
       sessionStorage.setItem('usertype', user.usertype);

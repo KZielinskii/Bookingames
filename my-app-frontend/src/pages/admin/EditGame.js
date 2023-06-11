@@ -4,6 +4,9 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 
 export default function EditGame() {
   let navigate = useNavigate()
+
+  const usertype = sessionStorage.getItem('usertype');
+
   let { id } = useParams()
 
   const [game, setGame] = useState({
@@ -62,6 +65,16 @@ export default function EditGame() {
       console.error(error);
     }
   };
+
+  if (usertype !== 'admin') {
+    return (
+      <div className='container'>
+        <div className='py-4'>
+          <h2>Access denied.</h2>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className='container'>

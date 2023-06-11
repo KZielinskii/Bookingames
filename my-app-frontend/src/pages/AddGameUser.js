@@ -2,7 +2,7 @@ import axios from 'axios'
 import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
-export default function AddGame() {
+export default function AddGameUser() {
   let navigate = useNavigate()
 
   const usertype = sessionStorage.getItem('usertype');
@@ -51,13 +51,13 @@ export default function AddGame() {
     try {
       game.transferredUserId = user_id;
       await axios.post('http://localhost:8080/game', game);
-      navigate('/manageGames');
+      navigate('/home');
     } catch (error) {
       console.error(error);
     }
   };
   
-  if (usertype !== 'admin') {
+  if (usertype !== 'admin' && usertype !== 'standard') {
     return (
       <div className='container'>
         <div className='py-4'>
@@ -160,7 +160,7 @@ export default function AddGame() {
             <button type='submit' className='btn btn-primary mx-2'>
               Dodaj
             </button>
-            <Link className='btn btn-danger mx-2' to='/manageGames'>
+            <Link className='btn btn-danger mx-2' to='/home'>
               Anuluj
             </Link>
           </form>

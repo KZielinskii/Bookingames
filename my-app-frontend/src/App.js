@@ -9,6 +9,7 @@ import Home from './pages/Home';
 import AddLocality from './pages/admin/AddLocality';
 import AddGame from './pages/admin/AddGame';
 import EditGame from './pages/admin/EditGame';
+import AddGameUser from './pages/AddGameUser';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import AddUser from './users/Register';
 import EditUser from './users/EditUser';
@@ -30,6 +31,7 @@ function App() {
           <Route exact path='/manageGames' element={<ManageGames/>}/>
           <Route exact path='/addLocality' element={<AddLocality/>}/>
           <Route exact path='/addGame' element={<AddGame/>}/>
+          <Route exact path='/addGameUser' element={<AddGameUser/>}/>
           <Route exact path="/editGame/:id" element={<EditGame />} />
           
           <Route exact path='/home' element={<Home/>}/>
