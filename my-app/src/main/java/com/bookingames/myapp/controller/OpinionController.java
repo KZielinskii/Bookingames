@@ -25,8 +25,10 @@ public class OpinionController {
             @PathVariable("idUser") Long idUser,
             @PathVariable("idPlayer") Long idPlayer
     ) {
-        AppUser userRated = appUserRepository.findById(idPlayer).orElseThrow(() -> new NotFoundException("Nie znaleziono użytkownika o id: " + idPlayer));
-        AppUser user = appUserRepository.findById(idUser).orElseThrow(() -> new NotFoundException("Nie znaleziono użytkownika o id: " + idUser));
+        AppUser userRated = appUserRepository.findById(idPlayer)
+                .orElseThrow(() -> new NotFoundException("Nie znaleziono użytkownika o id: " + idPlayer));
+        AppUser user = appUserRepository.findById(idUser)
+                .orElseThrow(() -> new NotFoundException("Nie znaleziono użytkownika o id: " + idUser));
 
         Optional<Opinion> existingOpinion = opinionRepository.findByUserAndRatedUser(user, userRated);
         if (existingOpinion.isPresent()) {
@@ -39,6 +41,14 @@ public class OpinionController {
         newOpinion.setRatedUser(userRated);
         newOpinion.setUser(user);
 
-        return opinionRepository.save(newOpinion);
+        opinionRepository.save(newOpinion);
+
+        double averageRating = opinionRepository.calculateAverageRatingByRatedUser(userRated);
+        int level = (int) (averageRating * 1000);
+        userRated.setLevel(level);
+
+        appUserRepository.save(userRated);
+
+        return newOpinion;
     }
 }
