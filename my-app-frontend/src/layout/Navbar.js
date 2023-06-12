@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import logo from './navbar_logo.png';
+import './Navbar.css';
+
 
 export default function Navbar() {
   const location = useLocation();
@@ -23,20 +25,23 @@ export default function Navbar() {
             {isLogged ? (
               <>
                 {isAdmin ? (
-                  <Link className="btn btn-outline-light me-2" to="/admin">
+                  <Link className="btn btn-danger me-2" to="/admin">
                     Panel administratora
                   </Link>
                 ) : null}
-                <Link className="btn btn-outline-light me-2" to="/logout">
+                <Link className="btn btn-primary me-2" to="/completed">
+                  Zakończone gry
+                </Link>
+                <Link className="btn btn-primary me-2" to="/logout">
                   Wyloguj się
                 </Link>
               </>
             ) : (
               <>
-                <Link className="btn btn-outline-light me-2" to="/">
+                <Link className="btn btn-primary me-2" to="/">
                   Zaloguj się
                 </Link>
-                <Link className="btn btn-outline-light" to="/adduser">
+                <Link className="btn btn-primary me-2" to="/adduser">
                   Zarejestruj się
                 </Link>
               </>

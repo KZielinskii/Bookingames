@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
-export default function Home() {
+export default function Completed() {
   const [games, setGames] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [gamesPerPage] = useState(5);
@@ -22,7 +22,7 @@ export default function Home() {
     const now = new Date();
     const filtered = result.data.filter((game) => {
       const gameDateTime = new Date(game.datetime);
-      return gameDateTime > now;
+      return gameDateTime < now;
     });
     setGames(filtered);
     setFilteredGames(filtered);
@@ -39,7 +39,7 @@ export default function Home() {
       const { name, occupied, datetime, locality } = game;
       const gameDateTime = new Date(datetime);
       return (
-        (gameDateTime > now) &&
+        (gameDateTime < now) &&
         (name.toLowerCase().includes(searchTerm.toLowerCase()) ||
           occupied.toString().includes(searchTerm) ||
           datetime.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -106,88 +106,7 @@ export default function Home() {
     return (
       <div className='container'>
         <div className='py-4'>
-          <div className='d-flex justify-content-between align-items-center'>
-            <h1>Nadchodzące gry:</h1>
-            <button type="button" class="btn btn-secondary btn-lg" disabled>Dodaj grę</button>
-          </div>
-  
-          <div className='mb-3'>
-            <input
-              type='text'
-              className='form-control'
-              placeholder='Wyszukaj...'
-              value={search}
-              onChange={handleSearch}
-            />
-          </div>
-  
-          <table className='table border shadow'>
-            <thead>
-              <tr>
-                <th scope='col'></th>
-                <th scope='col' onClick={() => requestSort('name')}>
-                  Nazwa gry {sortConfig.key === 'name' && <i className={`fas fa-sort-${sortConfig.direction}`} />}
-                </th>
-                <th scope='col' onClick={() => requestSort('occupied')}>
-                  Aktualna liczba graczy{' '}
-                  {sortConfig.key === 'occupied' && <i className={`fas fa-sort-${sortConfig.direction}`} />}
-                </th>
-                <th scope='col'>Pojemność</th>
-                <th scope='col' onClick={() => requestSort('datetime')}>
-                  Data {sortConfig.key === 'datetime' && <i className={`fas fa-sort-${sortConfig.direction}`} />}
-                </th>
-                <th scope='col' onClick={() => requestSort('locality')}>
-                  Miejscowość {sortConfig.key === 'locality' && <i className={`fas fa-sort-${sortConfig.direction}`} />}
-                </th>
-                <th scope='col' onClick={() => requestSort('level')}>
-                  Poziom rozgrywek {sortConfig.key === 'level' && <i className={`fas fa-sort-${sortConfig.direction}`} />}
-                </th>
-                <th scope='col' onClick={() => requestSort('organizer')}>
-                  Organizator {sortConfig.key === 'organizer' && <i className={`fas fa-sort-${sortConfig.direction}`} />}
-                </th>
-                <th scope='col'></th>
-              </tr>
-            </thead>
-            <tbody>
-              {currentGames.map((game, index) => (
-                <tr key={index}>
-                  <th scope='row'>{index + 1}</th>
-                  <td>{game.name}</td>
-                  <td>{game.occupied}</td>
-                  <td>{game.capacity}</td>
-                  <td>{formatDateTime(game.datetime)}</td>
-                  <td>{game.locality.name}</td>
-                  <td>
-                    {game.level === 'BEGINNER' && 'Początkujący'}
-                    {game.level === 'AMATEUR' && 'Amator'}
-                    {game.level === 'PROFESSIONAL' && 'Zawodowiec'}
-                    {game.level === 'MASTER' && 'Mistrz'}
-                  </td>
-                  <td>{game.appUser.username}</td>
-                  <td>
-                  <button type="button" class="btn btn-secondary btn-lg mx-2 my-2" disabled>Dołącz do gry</button>
-                    <button className='btn btn-primary mx-2 my-2' style={{ textDecoration: 'none' }}>
-                      <Link to={`/details/${game.id}`} className='text-white' style={{ textDecoration: 'none' }}>
-                        Szczegóły
-                      </Link>
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-  
-          <div className='pagination'>
-            <ul className='pagination'>
-              {Array.from({ length: Math.ceil(filteredGames.length / gamesPerPage) }, (_, index) => (
-                <li key={index} className='page-item'>
-                  <button className='page-link' onClick={() => paginate(index + 1)}>
-                    {index + 1}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <h2>Access denied.</h2>
         </div>
       </div>
     );
@@ -208,10 +127,7 @@ export default function Home() {
     <div className='container'>
       <div className='py-4'>
         <div className='d-flex justify-content-between align-items-center'>
-          <h1>Nadchodzące gry:</h1>
-          <Link className='btn btn-primary' to='/addGameUser'>
-            Dodaj grę
-          </Link>
+          <h1>Zakończone gry:</h1>
         </div>
 
         <div className='mb-3'>
@@ -268,13 +184,6 @@ export default function Home() {
                 </td>
                 <td>{game.appUser.username}</td>
                 <td>
-                  <button
-                    className='btn btn-primary mx-2 my-2'
-                    style={{ textDecoration: 'none' }}
-                    onClick={() => joinToGame(game.id)}
-                  >
-                    Dołącz do gry
-                  </button>
                   <button className='btn btn-primary mx-2 my-2' style={{ textDecoration: 'none' }}>
                     <Link to={`/details/${game.id}`} className='text-white' style={{ textDecoration: 'none' }}>
                       Szczegóły
