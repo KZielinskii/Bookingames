@@ -21,6 +21,8 @@ export default function Home() {
     const result = await axios.get('http://localhost:8080/games');
     setGames(result.data);
     setFilteredGames(result.data);
+    setSearch("");
+    filterGames("");
   };
 
   const handleSearch = (e) => {
@@ -29,13 +31,16 @@ export default function Home() {
   };
 
   const filterGames = (searchTerm) => {
+    const now = new Date();
     const filtered = games.filter((game) => {
       const { name, occupied, datetime, locality } = game;
+      const gameDateTime = new Date(datetime);
       return (
-        name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        occupied.toString().includes(searchTerm) ||
-        datetime.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        locality.name.toLowerCase().includes(searchTerm.toLowerCase())
+        (gameDateTime > now) &&
+        (name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          occupied.toString().includes(searchTerm) ||
+          datetime.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          locality.name.toLowerCase().includes(searchTerm.toLowerCase()))
       );
     });
     setFilteredGames(filtered);
@@ -119,7 +124,7 @@ export default function Home() {
     <div className='container'>
       <div className='py-4'>
         <div className='d-flex justify-content-between align-items-center'>
-          <h1>Aktualne gry:</h1>
+          <h1>Nadchodzące gry:</h1>
           <Link className='btn btn-primary' to='/addGameUser'>
             Dodaj grę
           </Link>
@@ -159,7 +164,7 @@ export default function Home() {
               <th scope='col' onClick={() => requestSort('organizer')}>
                 Organizator {sortConfig.key === 'organizer' && <i className={`fas fa-sort-${sortConfig.direction}`} />}
               </th>
-              <th scope='col'>Action</th>
+              <th scope='col'></th>
             </tr>
           </thead>
           <tbody>
