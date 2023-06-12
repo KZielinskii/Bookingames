@@ -6,7 +6,6 @@ export default function DetailsWithRating() {
   const { id } = useParams();
   const [game, setGame] = useState(null);
   const [ratings, setRatings] = useState({});
-  const [isOpinionSaved, setIsOpinionSaved] = useState(false);
 
   const user_id = sessionStorage.getItem('user_id');
 
@@ -67,9 +66,10 @@ export default function DetailsWithRating() {
     const comment = rating.comment || '';
     try {
       await axios.post(`http://localhost:8080/opinion/${opinion}/${comment}/${user_id}/${userId}`);
-      setIsOpinionSaved(true);
+      alert("Pomyślnie dodano opinie!");
     } catch (error) {
       console.error('Błąd podczas zapisywania opinii', error);
+      alert("Nie możesz dodać opini użytkownikowi, któremu już wystawiałeś opinie!");
     }
   };
 
@@ -129,7 +129,6 @@ export default function DetailsWithRating() {
                         className="form-select mb-2"
                         value={ratings[user.id]?.rating || ''}
                         onChange={(e) => handleRatingChange(user.id, e.target.value)}
-                        disabled={isOpinionSaved}
                       >
                         <option value="">Wybierz ocenę</option>
                         <option value="1">⭐</option>
@@ -144,13 +143,11 @@ export default function DetailsWithRating() {
                         placeholder="Wpisz opinię..."
                         value={ratings[user.id]?.comment || ''}
                         onChange={(e) => handleCommentChange(user.id, e.target.value)}
-                        disabled={isOpinionSaved}
                       />
-                      <button
-                        className="btn btn-outline-primary"
-                        onClick={() => handleSaveOpinion(user.id)}
-                        disabled={!ratings[user.id]?.rating || isOpinionSaved}
-                      >
+                       <button
+                          className="btn btn-outline-primary"
+                          onClick={() => handleSaveOpinion(user.id)}
+                        >
                         Zapisz
                       </button>
                     </div>
