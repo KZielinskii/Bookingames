@@ -5,7 +5,9 @@ import { useParams } from 'react-router-dom';
 export default function DetailsWithRating() {
   const { id } = useParams();
   const [game, setGame] = useState(null);
-  const [ratings, setRatings] = useState({}); // Dodano stan do przechowywania ocen zawodników
+  const [ratings, setRatings] = useState({});
+
+  const user_id = sessionStorage.getItem('user_id');
 
   useEffect(() => {
     loadGameDetails();
@@ -40,17 +42,32 @@ export default function DetailsWithRating() {
   const handleRatingChange = (userId, rating) => {
     setRatings((prevRatings) => ({
       ...prevRatings,
-      [userId]: rating
+      [userId]: {
+        ...(prevRatings[userId] || {}),
+        rating,
+      },
+    }));
+  };
+  
+  const handleCommentChange = (userId, comment) => {
+    setRatings((prevRatings) => ({
+      ...prevRatings,
+      [userId]: {
+        ...(prevRatings[userId] || {}),
+        rating: prevRatings[userId]?.rating || '',
+        comment,
+      },
     }));
   };
 
-  const handleRatingSubmit = async (userId) => {
+  const handleSaveOpinion = async (userId) => {
     const rating = ratings[userId];
+    const opinion = rating.rating;
+    const comment = rating.comment || '';
     try {
-      await axios.post(`http://localhost:8080/rate/${userId}`, { rating });
-      alert('Ocena została zapisana!');
+      await axios.post(`http://localhost:8080/opinion/${opinion}/${comment}/${user_id}/${userId}`);
     } catch (error) {
-      console.error(error);
+      console.error('Błąd podczas zapisywania opinii', error);
     }
   };
 
@@ -98,27 +115,44 @@ export default function DetailsWithRating() {
                 </tr>
               </thead>
               <tbody>
-                {game.appUsers.map((user) => (
-                  <tr key={user.id}>
-                    <td style={{ border: '1px solid black', padding: '8px', textAlign: 'center' }}>{user.username}</td>
-                    <td style={{ border: '1px solid black', padding: '8px', textAlign: 'center' }}>{user.name}</td>
-                    <td style={{ border: '1px solid black', padding: '8px', textAlign: 'center' }}>{user.email}</td>
-                    <td style={{ border: '1px solid black', padding: '8px', textAlign: 'center' }}>{renderStars(user.level)}</td>
-                    <td style={{ border: '1px solid black', padding: '8px', textAlign: 'center' }}>
-                      <div>
-                        <select value={ratings[user.id] || ''} onChange={(e) => handleRatingChange(user.id, e.target.value)}>
-                          <option value=''>Wybierz ocenę</option>
-                          <option value='1'>⭐</option>
-                          <option value='2'>⭐⭐</option>
-                          <option value='3'>⭐⭐⭐</option>
-                          <option value='4'>⭐⭐⭐⭐</option>
-                          <option value='5'>⭐⭐⭐⭐⭐</option>
-                        </select>
-                        <button disabled={!ratings[user.id]} onClick={() => handleRatingSubmit(user.id)}>Zapisz ocenę</button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
+              {game.appUsers.map((user) => (
+                <tr key={user.id}>
+                  <td className="border px-4 py-2 text-center">{user.username}</td>
+                  <td className="border px-4 py-2 text-center">{user.name}</td>
+                  <td className="border px-4 py-2 text-center">{user.email}</td>
+                  <td className="border px-4 py-2 text-center">{renderStars(user.level)}</td>
+                  <td className="border px-4 py-2 text-center">
+                    <div className="d-flex flex-column align-items-center">
+                      <select
+                        className="form-select mb-2"
+                        value={ratings[user.id]?.rating || ''}
+                        onChange={(e) => handleRatingChange(user.id, e.target.value)}
+                      >
+                        <option value="">Wybierz ocenę</option>
+                        <option value="1">⭐</option>
+                        <option value="2">⭐⭐</option>
+                        <option value="3">⭐⭐⭐</option>
+                        <option value="4">⭐⭐⭐⭐</option>
+                        <option value="5">⭐⭐⭐⭐⭐</option>
+                      </select>
+                      <input
+                        type="text"
+                        className="form-control mb-2"
+                        placeholder="Wpisz opinię..."
+                        value={ratings[user.id]?.comment || ''}
+                        onChange={(e) => handleCommentChange(user.id, e.target.value)}
+                      />
+                      <button
+                        className="btn btn-outline-primary"
+                        onClick={() => handleSaveOpinion(user.id)}
+                        disabled={!ratings[user.id]?.rating}
+                      >
+                        Zapisz
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
               </tbody>
             </table>
           </div>
