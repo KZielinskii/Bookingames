@@ -185,7 +185,7 @@ export default function Completed() {
                 <td>{game.appUser.username}</td>
                 <td>
                   <button className='btn btn-primary mx-2 my-2' style={{ textDecoration: 'none' }}>
-                    <Link to={`/details/${game.id}`} className='text-white' style={{ textDecoration: 'none' }}>
+                    <Link to={`/detailsWithRating/${game.id}`} className='text-white' style={{ textDecoration: 'none' }}>
                       Szczegóły
                     </Link>
                   </button>
