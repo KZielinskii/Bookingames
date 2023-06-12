@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 
 export default function Home() {
   const [games, setGames] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [gamesPerPage] = useState(5);
   const [filteredGames, setFilteredGames] = useState([]);
   const [search, setSearch] = useState('');
   const [sortConfig, setSortConfig] = useState({ key: '', direction: '' });
@@ -47,7 +49,7 @@ export default function Home() {
     setSortConfig({ key, direction });
     sortGames(key, direction);
   };
-  
+
   const sortGames = (key, direction) => {
     const sorted = [...filteredGames].sort((a, b) => {
       if (key === 'name') {
@@ -67,9 +69,7 @@ export default function Home() {
           : b.locality.name.localeCompare(a.locality.name);
       }
       if (key === 'level') {
-        return direction === 'ascending'
-          ? a.level.localeCompare(b.level)
-          : b.level.localeCompare(a.level);
+        return direction === 'ascending' ? a.level.localeCompare(b.level) : b.level.localeCompare(a.level);
       }
       if (key === 'organizer') {
         return direction === 'ascending'
@@ -86,6 +86,14 @@ export default function Home() {
     return new Date(dateTime).toLocaleString('pl-PL', options).replace(', ', ' ');
   };
 
+  const indexOfLastGame = currentPage * gamesPerPage;
+  const indexOfFirstGame = indexOfLastGame - gamesPerPage;
+  const currentGames = filteredGames.slice(indexOfFirstGame, indexOfLastGame);
+
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
   if (usertype !== 'admin' && usertype !== 'standard') {
     return (
       <div className='container'>
@@ -97,15 +105,15 @@ export default function Home() {
   }
 
   function joinToGame(gameid) {
-    axios.put(`http://localhost:8080/game/${gameid}/addUser/${user_id}`)
-      .then(response => {
-        alert("Dołączyłeś do gry!");
+    axios
+      .put(`http://localhost:8080/game/${gameid}/addUser/${user_id}`)
+      .then((response) => {
+        alert('Dołączyłeś do gry!');
       })
-      .catch(error => {
-        alert("Nie możesz dołączyć do tej gry!");
+      .catch((error) => {
+        alert('Nie możesz dołączyć do tej gry!');
       });
   }
-  
 
   return (
     <div className='container'>
@@ -135,7 +143,8 @@ export default function Home() {
                 Nazwa gry {sortConfig.key === 'name' && <i className={`fas fa-sort-${sortConfig.direction}`} />}
               </th>
               <th scope='col' onClick={() => requestSort('occupied')}>
-                Aktualna liczba graczy {sortConfig.key === 'occupied' && <i className={`fas fa-sort-${sortConfig.direction}`} />}
+                Aktualna liczba graczy{' '}
+                {sortConfig.key === 'occupied' && <i className={`fas fa-sort-${sortConfig.direction}`} />}
               </th>
               <th scope='col'>Pojemność</th>
               <th scope='col' onClick={() => requestSort('datetime')}>
@@ -154,7 +163,7 @@ export default function Home() {
             </tr>
           </thead>
           <tbody>
-            {filteredGames.map((game, index) => (
+            {currentGames.map((game, index) => (
               <tr key={index}>
                 <th scope='row'>{index + 1}</th>
                 <td>{game.name}</td>
@@ -163,20 +172,20 @@ export default function Home() {
                 <td>{formatDateTime(game.datetime)}</td>
                 <td>{game.locality.name}</td>
                 <td>
-                  {game.level === "BEGINNER" && "Początkujący"}
-                  {game.level === "AMATEUR" && "Amator"}
-                  {game.level === "PROFESSIONAL" && "Zawodowiec"}
-                  {game.level === "MASTER" && "Mistrz"}
+                  {game.level === 'BEGINNER' && 'Początkujący'}
+                  {game.level === 'AMATEUR' && 'Amator'}
+                  {game.level === 'PROFESSIONAL' && 'Zawodowiec'}
+                  {game.level === 'MASTER' && 'Mistrz'}
                 </td>
                 <td>{game.appUser.username}</td>
                 <td>
-                <button
-                  className='btn btn-primary mx-2 my-2'
-                  style={{ textDecoration: 'none' }}
-                  onClick={() => joinToGame(game.id)}
-                >
-                  Dołącz do gry
-                </button>
+                  <button
+                    className='btn btn-primary mx-2 my-2'
+                    style={{ textDecoration: 'none' }}
+                    onClick={() => joinToGame(game.id)}
+                  >
+                    Dołącz do gry
+                  </button>
                   <button className='btn btn-primary mx-2 my-2' style={{ textDecoration: 'none' }}>
                     <Link to={`/details/${game.id}`} className='text-white' style={{ textDecoration: 'none' }}>
                       Szczegóły
@@ -187,6 +196,18 @@ export default function Home() {
             ))}
           </tbody>
         </table>
+
+        <div className='pagination'>
+          <ul className='pagination'>
+            {Array.from({ length: Math.ceil(filteredGames.length / gamesPerPage) }, (_, index) => (
+              <li key={index} className='page-item'>
+                <button className='page-link' onClick={() => paginate(index + 1)}>
+                  {index + 1}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </div>
   );
