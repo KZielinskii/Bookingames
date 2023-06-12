@@ -6,6 +6,7 @@ import ManageLocations from './pages/admin/ManageLocations';
 import ManageGames from './pages/admin/ManageGames';
 import Admin from './pages/admin/Admin';
 import Home from './pages/Home';
+import Details from './pages/Details';
 import AddLocality from './pages/admin/AddLocality';
 import AddGame from './pages/admin/AddGame';
 import EditGame from './pages/admin/EditGame';
@@ -35,6 +36,7 @@ function App() {
           <Route exact path="/editGame/:id" element={<EditGame />} />
           
           <Route exact path='/home' element={<Home/>}/>
+          <Route exact path='/details/:id' element={<Details/>}/>
           <Route exact path='/adduser' element={<AddUser/>}/>
           <Route exact path='/edituser/:id' element={<EditUser/>}/>
         </Routes>

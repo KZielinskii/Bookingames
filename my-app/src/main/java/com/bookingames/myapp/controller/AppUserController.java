@@ -49,6 +49,7 @@ public class AppUserController {
             user.setName(newUser.getName());
             user.setEmail(newUser.getEmail());
             user.setUsertype(newUser.getUsertype());
+            user.setLevel(newUser.getLevel());
             return appUserRepository.save(user);
         }).orElseThrow(()->new NotFoundException("Nie znaleziono użytkowniaka o id: " +id));
     }

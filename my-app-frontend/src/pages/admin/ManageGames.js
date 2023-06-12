@@ -135,12 +135,12 @@ export default function ManageGames() {
                 <td>{game.datetime}</td>
                 <td>{game.locality.name}</td>
                 <td>
-                  <button className='btn btn-primary mx-2'>
-                    <Link to={`/editGame/${game.id}`} className='text-white'>
+                  <button className='btn btn-primary mx-2 my-2'>
+                    <Link to={`/editGame/${game.id}`} className='text-white' style={{ textDecoration: 'none' }}>
                       Edytuj
                     </Link>
                   </button>
-                  <button className='btn btn-danger mx-2' onClick={() => deleteGame(game.id)}>
+                  <button className='btn btn-danger mx-2 my-2' onClick={() => deleteGame(game.id)}>
                     Usuń
                   </button>
                 </td>

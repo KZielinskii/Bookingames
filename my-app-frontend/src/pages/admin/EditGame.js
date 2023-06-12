@@ -14,8 +14,9 @@ export default function EditGame() {
     capacity: '',
     occupied: '',
     datetime: '',
-    transferredId: '',
-    level: ''
+    level: '',
+    transferredLocationId: '',
+    transferredUserId: ''
   })
 
   const [localities, setLocalities] = useState([])
@@ -48,13 +49,13 @@ export default function EditGame() {
   }
 
   const onSelectChange = (e) => {
-    setGame({ ...game, transferredId: e.target.value })
+    setGame({ ...game, transferredLocationId: e.target.value })
   }
 
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    if (!game.name || !game.capacity || !game.datetime || !game.transferredId || !game.level) {
+    if (!game.name || !game.capacity || !game.datetime || !game.transferredLocationId || !game.level) {
       alert('Proszę wypełnić wszystkie pola formularza.');
       return;
     }
@@ -135,7 +136,7 @@ export default function EditGame() {
                 className='form-control'
                 id='locality'
                 name='localityId'
-                value={game.transferredId}
+                value={game.transferredLocationId}
                 onChange={(e) => onSelectChange(e)}
               >
                 <option value=''>Wybierz lokalizację...</option>
