@@ -64,4 +64,20 @@ public class OpinionController {
 
         return newOpinion;
     }
+
+    @PutMapping("/opinion/{opinionId}/{rating}/{comment}")
+    public Opinion editOpinion(
+            @PathVariable("opinionId") Long opinionId,
+            @PathVariable("rating") int rating,
+            @PathVariable("comment") String comment
+    ) {
+        Opinion opinion = opinionRepository.findById(opinionId).orElseThrow(() -> new NotFoundException("Nie znaleziono opinii o id: " + opinionId));
+
+        opinion.setRating(rating);
+        opinion.setComment(comment);
+        opinionRepository.save(opinion);
+
+        return opinion;
+    }
+
 }

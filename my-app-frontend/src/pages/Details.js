@@ -42,10 +42,10 @@ export default function Details() {
   }
 
   return (
-    <div className='col-md-6 offset-md-3 border rounded p-4 mt-2 shadow'>
+    <div className='col-md-10 offset-md-1 border rounded p-4 mt-2 shadow'>
     <div className="container">
       <div className="py-4">
-        <h1 style={{ fontWeight: 'bold', borderBottom: '1px solid black' }}>{game.name}</h1>
+        <h1 style={{ fontWeight: 'bold', borderBottom: '1px solid black', padding: '10px 0'}}>{game.name}</h1>
         <div>
           <p>
             <strong>Zajęte miejsca:</strong> {game.occupied}/{game.capacity}
