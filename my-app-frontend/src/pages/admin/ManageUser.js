@@ -16,8 +16,15 @@ export default function ManageUser() {
     };
   
     const deleteUser = async (id) => {
-      await axios.delete(`http://localhost:8080/user/${id}`);
-      loadUsers();
+      try {
+        await axios.delete(`http://localhost:8080/user/${id}`);
+        loadUsers();
+        alert('Pomyślnie usunięto użytkownika');
+      }catch(error) {
+        console.error(error);
+        alert('Użytkownik nie może zostać usunięty');
+      }
+      
     };
   
     if (usertype !== 'admin') {
