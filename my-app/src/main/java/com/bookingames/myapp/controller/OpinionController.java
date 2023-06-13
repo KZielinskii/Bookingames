@@ -80,4 +80,8 @@ public class OpinionController {
         return opinion;
     }
 
+    @DeleteMapping("/opinion/{commentId}")
+    public void deleteOpinion(@PathVariable("commentId") Long commentId) {
+        opinionRepository.deleteById(commentId);
+    }
 }

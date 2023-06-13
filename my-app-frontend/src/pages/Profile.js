@@ -6,7 +6,9 @@ export default function Profile() {
   const { id } = useParams();
   const [user, setUser] = useState(null);
   const [opinions, setOpinions] = useState([]);
+  
   const user_id = sessionStorage.getItem('user_id');
+  const usertype = sessionStorage.getItem('usertype');
 
   useEffect(() => {
     loadUser();
@@ -67,6 +69,15 @@ export default function Profile() {
     setEditedRating(comment.rating);
     setEditingCommentId(commentId);
   };
+
+  const handleDeleteComment = async (commentId) => {
+    try {
+      await axios.delete(`http://localhost:8080/opinion/${commentId}`);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  
 
   const handleSaveComment = (commentId) => {
     editComment(commentId);
@@ -179,6 +190,14 @@ export default function Profile() {
                         )}
                       </div>
                     )}
+                    {usertype === 'admin' ? (
+                          <button
+                          onClick={() => handleDeleteComment(opinion.id)}
+                          className="btn btn-outline-danger mx-2 my-2"
+                        >
+                          Usuń
+                        </button>
+                        ):('')}
                   </div>
                 </div>
               </div>
