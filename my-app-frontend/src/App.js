@@ -1,5 +1,8 @@
 import './App.css';
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
+
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
 import Navbar from './layout/Navbar';
 import ManageUser from './pages/admin/ManageUser';
 import ManageLocations from './pages/admin/ManageLocations';
@@ -9,11 +12,11 @@ import Home from './pages/Home';
 import Details from './pages/Details';
 import DetailsWithRating from './pages/DetailsWithRating';
 import Completed from './pages/Completed';
+import Profile from './pages/Profile';
 import AddLocality from './pages/admin/AddLocality';
 import AddGame from './pages/admin/AddGame';
 import EditGame from './pages/admin/EditGame';
 import AddGameUser from './pages/AddGameUser';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import AddUser from './users/Register';
 import EditUser from './users/EditUser';
 import Login from './users/Login';
@@ -35,7 +38,8 @@ function App() {
           <Route exact path='/addLocality' element={<AddLocality/>}/>
           <Route exact path='/addGame' element={<AddGame/>}/>
           <Route exact path='/addGameUser' element={<AddGameUser/>}/>
-          <Route exact path="/editGame/:id" element={<EditGame />} />
+          <Route exact path='/editGame/:id' element={<EditGame />} />
+          <Route exact path='/profile/:id' element={<Profile/>} />
           
           <Route exact path='/completed' element={<Completed/>}/>
           <Route exact path='/detailsWithRating/:id' element={<DetailsWithRating/>}/>

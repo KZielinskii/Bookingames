@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 
 export default function Details() {
   const { id } = useParams();
@@ -82,7 +82,9 @@ export default function Details() {
             <tbody>
               {game.appUsers.map((user) => (
                 <tr key={user.id}>
-                  <td style={{ border: '1px solid black', padding: '8px', textAlign: 'center' }}>{user.username}</td>
+                  <td style={{ border: '1px solid black', padding: '8px', textAlign: 'center' }}>
+                    <Link to={`/profile/${user.id}`}>{user.username}</Link>
+                  </td>
                   <td style={{ border: '1px solid black', padding: '8px', textAlign: 'center' }}>{user.name}</td>
                   <td style={{ border: '1px solid black', padding: '8px', textAlign: 'center' }}>{user.email}</td>
                   <td style={{ border: '1px solid black', padding: '8px', textAlign: 'center' }}>{renderStars(user.level)}</td>

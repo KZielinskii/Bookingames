@@ -2,12 +2,14 @@ package com.bookingames.myapp.controller;
 
 import com.bookingames.myapp.exception.NotFoundException;
 import com.bookingames.myapp.model.AppUser;
+import com.bookingames.myapp.model.Game;
 import com.bookingames.myapp.model.Opinion;
 import com.bookingames.myapp.repository.AppUserRepository;
 import com.bookingames.myapp.repository.OpinionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -18,6 +20,17 @@ public class OpinionController {
     @Autowired
     private AppUserRepository appUserRepository;
 
+    @GetMapping("/opinions")
+    List<Opinion> getAllOpinions() {
+        return opinionRepository.findAll();
+    }
+    @GetMapping("/opinions/user/{id}")
+    List<Opinion> getOpinionsByRatedUserId(@PathVariable Long id) {
+        AppUser userRated = appUserRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Nie znaleziono użytkownika o id: " + id));
+
+        return opinionRepository.findByRatedUser(userRated);
+    }
     @PostMapping("/opinion/{opinion}/{text}/{idUser}/{idPlayer}")
     Opinion saveOpinion(
             @PathVariable("opinion") int opinion,
