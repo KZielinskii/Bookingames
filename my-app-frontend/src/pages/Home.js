@@ -193,16 +193,16 @@ export default function Home() {
     );
   }
 
-  function joinToGame(gameid) {
-    axios
-      .put(`http://localhost:8080/game/${gameid}/addUser/${user_id}`)
-      .then((response) => {
-        alert('Dołączyłeś do gry!');
-      })
-      .catch((error) => {
-        alert('Nie możesz dołączyć do tej gry!');
-      });
-  }
+  const joinToGame = async (gameid) => {
+    try {
+      const response = await axios.put(`http://localhost:8080/game/${gameid}/addUser/${user_id}`);
+      alert('Dołączyłeś do gry!');
+      loadGames();
+    } catch (error) {
+      alert('Nie możesz dołączyć do tej gry!');
+      console.error(error);
+    }
+  };
 
   return (
     <div className='container'>
